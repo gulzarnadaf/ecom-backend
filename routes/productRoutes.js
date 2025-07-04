@@ -7,12 +7,13 @@ const {
   deleteProduct,
 } = require("../controllers/ProductController");
 const validateProduct = require("../utils/validateProduct");
+const { isAuth, isAdmin } = require("../middlewares/authMiddlewares");
 
 const productRoutes = express.Router();
-productRoutes.post("/", validateProduct, createProduct);
-productRoutes.get("/", getAllProducts);
-productRoutes.get("/:id", getProductById);
-productRoutes.put("/:id", validateProduct, updateProduct);
-productRoutes.delete("/:id", deleteProduct);
+productRoutes.post("/", isAuth, isAdmin, validateProduct, createProduct);
+productRoutes.get("/", isAuth, getAllProducts);
+productRoutes.get("/:id", isAuth, getProductById);
+productRoutes.put("/:id", isAuth, isAdmin, validateProduct, updateProduct);
+productRoutes.delete("/:id", isAuth, isAdmin, deleteProduct);
 
 module.exports = productRoutes;
